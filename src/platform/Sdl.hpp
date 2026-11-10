@@ -1,13 +1,16 @@
 #include <SDL2/SDL.h>
-#include <iostream>
+#include <iostream> 
+#include <cstdint>
+#include <vector>
 
-class sdl{
+class Sdl{
     public:
-    sdl();
-    ~sdl();
+    Sdl();
+    ~Sdl();
     void sdlInit();
-    void sdlQuit();
+    void sdlUpdate(const std::vector<uint32_t> &pixels);
     bool sdlinput(bool* running);
+    void sdlQuit();
     private:
     SDL_Window* window;
     SDL_Renderer* renderer;

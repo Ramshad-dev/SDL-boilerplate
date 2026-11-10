@@ -1,14 +1,14 @@
-#include "sdl.hpp"
+#include "Sdl.hpp"
 
-sdl::sdl(){
+Sdl::Sdl(){
     sdlInit();
 }
 
-sdl::~sdl(){
+Sdl::~Sdl(){
     sdlQuit();
 }
 
-bool sdl::sdlinput(bool* running){
+bool Sdl::sdlinput(bool* running){
     bool changed = false;
     while(SDL_PollEvent(&event)){
         switch(event.type){
@@ -31,7 +31,7 @@ bool sdl::sdlinput(bool* running){
 
 
 
-void sdl::sdlInit(){
+void Sdl::sdlInit(){
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         std::cerr << "SDL init failed: " << SDL_GetError() << '\n';
         std::exit(1);
@@ -42,10 +42,17 @@ void sdl::sdlInit(){
     texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, ResolutionWidth, ResolutionHeight);
 }
 
-void sdl::sdlQuit(){
-    SDL_DestroyWindow(window);
-    SDL_DestroyRenderer(renderer);
+void Sdl::sdlUpdate(const std::vector<uint32_t> &pixels){
+    SDL_UpdateTexture(texture, NULL, pixels.data(), ResolutionWidth * sizeof(uint32_t));
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
+}
+
+void Sdl::sdlQuit(){
     SDL_DestroyTexture(texture);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
     window = NULL;
     renderer=NULL;
     texture=NULL;

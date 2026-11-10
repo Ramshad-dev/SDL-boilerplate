@@ -26,7 +26,7 @@ target_include_directories(
 
 add_library(
     platform
-    src/platform/sdl.cpp
+    src/platform/Sdl.cpp
 )
 
 target_include_directories(
